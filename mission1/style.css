@@ -1,0 +1,122 @@
+:root {
+    --main-radius: 5px;
+    --main-padding: 5px;
+}
+  
+body{
+    font-family: sans-serif;
+    
+}
+
+.container{
+    display: grid;
+    height: 100vh;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-areas:
+        "Kuning Hijau Merah BiruTua"
+        "Hitam Coklat Putih Abu Orange"
+        "Hitam Pink Pink Abu Abu Orange"
+        "Hitam Biru Ungu Ungu";
+    font-weight: 800;
+    font-size: 12px;
+    text-align: center;
+    background-color: black;
+    padding: 10px;
+    gap: 3px;
+}
+
+.container > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.item1{
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+.Kuning {
+    background-color: rgb(251, 255, 6);
+}
+
+.Hijau {
+    background-color: forestgreen;
+}
+
+.Merah {
+    background-color: rgb(255, 17, 17);
+}
+
+#BiruTua {
+    background-color: rgb(35, 106, 150);
+    grid-row: 4 / span 3;
+    height: auto;
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+#Hitam {
+    background-color: black;
+    grid-row: 1;
+    height: auto;
+    grid-column-start: 2;
+    grid-column-end: 5;
+    color: white;
+    
+}
+
+#Coklat {
+    background-color: brown;
+    grid-row: 2;
+    height: auto;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    color: white;
+}
+
+#Putih {
+    background-color: white;
+    grid-row: 3;
+    height: auto;
+    grid-column-start: 2;
+    grid-column-end: 2;
+}
+
+#Abu {
+    background-color: rgb(206, 205, 203);
+    grid-row: 4 / span 2;
+    grid-column: 2 / span 2;
+}
+
+#Orange {
+    background-color: goldenrod;
+    grid-row: 6;
+    grid-column: 2 / span 2;
+}
+
+#Pink {
+    background-color: rgb(255, 59, 164);
+    grid-row: 2 / span 2;
+    grid-column-start: 3;
+    grid-column-end: 3;
+}
+
+#Biru {
+    background-color: deepskyblue;
+    grid-row: 2;
+    height: auto;
+    grid-column-start: 4;
+    grid-column-end: 4;
+}
+
+#Ungu {
+    background-color: rgb(153, 0, 255);
+    grid-row: 3 / span 4;
+    grid-column-start: 4;
+    grid-column-end: 4;
+    color: white;
+}
+
