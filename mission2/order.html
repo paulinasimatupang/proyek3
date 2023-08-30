@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Keranjang Minimarket Online Sederhana</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-md-9" id="data-produk"></div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">Keranjang</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Jumlah Produk</th>
+                                    <th>Harga Produk</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-keranjang"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        let produk = [
+            {
+                id: 1,
+                nama: 'Pencil',
+                harga: 3000,
+                gambar: 'pencil.jpg'
+            },
+            {
+                id: 2,
+                nama: 'Pencil Case',
+                harga: 150000,
+                gambar: 'pencilcase.jpg'
+            },
+            {
+                id: 3,
+                nama: 'Book',
+                harga: 7000,
+                gambar: 'book.jpg'
+            },
+            {
+                id: 4,
+                nama: 'Pen',
+                harga: 12000,
+                gambar: 'pen.jpg'
+            },
+        ];
+
+        let cart = []; // Tambahkan definisi array cart
+
+        function loadProduk() {
+            produk.forEach(d => {
+                $('#data-produk').append(`
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">${d.nama}</div>
+                            <div class="card-body">
+                                <img src="${d.gambar}" width="100%" alt="${d.nama}">
+                                <p>Harga: Rp ${d.harga}</p>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-sm btn-secondary mx-2 reduce-quantity" data-id="${d.id}">-</button>
+                                    <span class="mx-2"><span id="quantity-${d.id}">0</span></span>
+                                    <button class="btn btn-sm btn-secondary mx-2 increase-quantity" data-id="${d.id}">+</button>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary btn-sm form-control add-to-cart" data-id="${d.id}" data-nama="${d.nama}" data-harga="${d.harga}">Tambah Keranjang</button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+        loadProduk();
+
+        function showCart() {
+        $('#data-keranjang').html('');
+
+        cart.forEach((d, i) => {
+            $('#data-keranjang').append(`
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${d.nama}</td>
+                    <td>${d.jumlah}</td>
+                    <td>Rp ${d.harga}</td>
+                    <td>Rp ${d.harga * d.jumlah}</td>
+                    <td>
+                        <button class="btn btn-danger remove-cart" data-id="${d.id}"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>
+            `);
+        });
+
+        // Menghitung total harga
+        let totalHarga = cart.reduce((total, item) => total + (item.harga * item.jumlah), 0);
+
+        $('#data-keranjang').append(`
+            <tr>
+                <td colspan="4" class="text-end">Total:</td>
+                <td>Rp ${totalHarga}</td>
+                <td></td>
+            </tr>
+        `);
+    }
+
+        $("#data-produk").on("click", ".add-to-cart", function () {
+            let id = $(this).data("id");
+            let nama = $(this).data("nama");
+            let harga = $(this).data("harga");
+
+            let existingItem = cart.findIndex(function (item) {
+                return item.id === id;
+            });
+
+            if (existingItem > -1) {
+                cart[existingItem].jumlah++;
+            } else {
+                cart.push({
+                    id: id,
+                    nama: nama,
+                    jumlah: 1,
+                    harga: harga
+                });
+            }
+
+            showCart();
+        });
+
+        $('#data-keranjang').on('click','.remove-cart', function() {
+            let id = $(this).data('id');
+            let itemIndex = cart.findIndex(function(item){
+                return item.id == id;
+            });
+            cart.splice(itemIndex,1);
+            showCart();
+        });
+
+        $('#data-produk').on('click', '.increase-quantity', function () {
+            let id = $(this).data('id');
+            let quantityElement = $('#quantity-' + id);
+            let quantity = parseInt(quantityElement.text()) + 1;
+            quantityElement.text(quantity);
+        });
+
+        $('#data-produk').on('click', '.reduce-quantity', function () {
+            let id = $(this).data('id');
+            let quantityElement = $('#quantity-' + id);
+            let quantity = parseInt(quantityElement.text());
+            if (quantity > 0) {
+                quantityElement.text(quantity - 1);
+            }
+        });
+    </script>
+</body>
+</html>
